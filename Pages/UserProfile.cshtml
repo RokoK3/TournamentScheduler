@@ -1,0 +1,16 @@
+@page "/profile"
+@model UserProfileModel
+@{
+    Layout = null; 
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UserProfile</title>
+</head>
+<body>
+    <h1>Welcome, @Model.Username!</h1>
+    <a href="/logout">Log out</a>
+</body>
+</html>

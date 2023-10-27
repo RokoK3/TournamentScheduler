@@ -1,9 +1,6 @@
-using System;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,33 +22,53 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = "vh-qXvI-LToYmlNb9u6xB4dJUxDD8D-iN-AB7bthA7XEtNnil0HH3HkAqvTQwwMk";
     options.ResponseType = "code";
     options.GetClaimsFromUserInfoEndpoint = true;
-
-    // Set the callback path, so Auth0 will call back to http://localhost:5001/signin-auth0 
-    // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard 
-    options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("/signin-auth0");
-
-    // Configure the Claims Issuer to be Auth0
+    options.CallbackPath = new PathString("/callback");
     options.ClaimsIssuer = "Auth0";
 });
 
+builder.WebHost.UseUrls("https://localhost:5202", "http://localhost:5201"); 
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
-}
-
 app.UseHttpsRedirection();
-app.UseStaticFiles();
 
 app.UseRouting();
 
-// Use authentication and authorization:
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages();
+app.MapGet("/", (HttpContext httpContext) => 
+{
+    if (!httpContext.User.Identity?.IsAuthenticated ?? true)
+    {
+        return Results.Redirect("/login");
+    }
+    return Results.Redirect("/profile");
+});
+
+app.MapGet("/login", () => 
+{
+    return Results.Challenge(new AuthenticationProperties { RedirectUri = "/" }, new[] { "Auth0" });
+});
+
+
+app.MapGet("/logout", async (HttpContext httpContext) =>
+{
+ 
+    await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+    var domain = "https://dev-2awvvkzfc3xx2uia.us.auth0.com";
+    var postLogoutUri = "https://localhost:5202/";
+    var clientId = "OXD1Fba0PAJhRf5opZRzLNC03dphqx10";
+    var auth0LogoutUrl = $"{domain}/v2/logout?returnTo={Uri.EscapeDataString(postLogoutUri)}&client_id={clientId}";
+
+
+    return Results.Redirect(auth0LogoutUrl);
+});
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+});
 
 app.Run();
