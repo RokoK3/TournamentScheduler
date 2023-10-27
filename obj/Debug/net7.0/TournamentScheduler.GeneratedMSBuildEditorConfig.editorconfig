@@ -16,6 +16,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = c:\Users\Admin\Desktop\TournamentScheduler
 build_property._RazorSourceGeneratorDebug = 
 
+[c:/Users/Admin/Desktop/TournamentScheduler/Pages/CreateCompetition.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlYXRlQ29tcGV0aXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [c:/Users/Admin/Desktop/TournamentScheduler/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -24,12 +28,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[c:/Users/Admin/Desktop/TournamentScheduler/Pages/MyCompetitions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlDb21wZXRpdGlvbnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [c:/Users/Admin/Desktop/TournamentScheduler/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [c:/Users/Admin/Desktop/TournamentScheduler/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Admin/Desktop/TournamentScheduler/Pages/TournamentCreated.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVG91cm5hbWVudENyZWF0ZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [c:/Users/Admin/Desktop/TournamentScheduler/Pages/UserProfile.cshtml]

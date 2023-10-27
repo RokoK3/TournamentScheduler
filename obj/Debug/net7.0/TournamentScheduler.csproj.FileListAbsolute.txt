@@ -43,3 +43,8 @@ C:\Users\Admin\Desktop\TournamentScheduler\obj\Debug\net7.0\refint\TournamentSch
 C:\Users\Admin\Desktop\TournamentScheduler\obj\Debug\net7.0\TournamentScheduler.pdb
 C:\Users\Admin\Desktop\TournamentScheduler\obj\Debug\net7.0\TournamentScheduler.genruntimeconfig.cache
 C:\Users\Admin\Desktop\TournamentScheduler\obj\Debug\net7.0\ref\TournamentScheduler.dll
+C:\Users\Admin\Desktop\TournamentScheduler\bin\Debug\net7.0\Humanizer.dll
+C:\Users\Admin\Desktop\TournamentScheduler\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\Admin\Desktop\TournamentScheduler\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\Admin\Desktop\TournamentScheduler\bin\Debug\net7.0\Mono.TextTemplating.dll
+C:\Users\Admin\Desktop\TournamentScheduler\bin\Debug\net7.0\System.CodeDom.dll

@@ -1,0 +1,30 @@
+@page "/profile/createcompetition"
+@model CreateCompetitionModel
+@{
+    Layout = null; 
+}
+
+<form method="post">
+    <div>
+        <label>Imena ekipa(odvojena ";" ili novim redom ):</label>
+        <textarea name="Teams" rows="5" required></textarea>
+    </div>
+
+    <div>
+        <label>Broj bodova za pobjedu:</label>
+        <input type="number" step="0.1" name="VictoryPoints" required>
+    </div>
+
+    <div>
+        <label>Broj bodova za izjednačen susret:</label>
+        <input type="number" step="0.1" name="DrawPoints" required>
+    </div>
+
+    <div>
+        <label>Broj bodova za poraz:</label>
+        <input type="number" step="0.1" name="DefeatPoints" required>
+    </div>
+
+    <input type="submit" value="Create">
+    <a href="/profile">Povratak na profilnu stranicu</a>
+</form>

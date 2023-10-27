@@ -1,8 +1,13 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
-
+using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+ var cultureInfo = new CultureInfo("en-US");
+    CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+    CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -27,6 +32,9 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.WebHost.UseUrls("https://localhost:5202", "http://localhost:5201"); 
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

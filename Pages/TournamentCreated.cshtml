@@ -1,0 +1,21 @@
+@page
+@model TournamentCreatedModel
+@{
+    Layout = null;
+}
+
+<h2>Napravljen novi turnir, prijavljene ekipe su:</h2>
+@if (Model.LatestCompetition != null)
+{
+    <ul>
+        @foreach (var team in Model.LatestCompetition.Teams.Split(',').Where(t => t.Trim() != "BYE"))
+        {
+            <li>@team</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No recent tournaments found for the user.</p>
+}
+<a href="/profile">Povratak na profilnu stranicu</a>
