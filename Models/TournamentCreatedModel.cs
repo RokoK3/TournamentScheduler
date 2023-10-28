@@ -16,7 +16,7 @@ public class TournamentCreatedModel : PageModel
     }
 
     public Competition LatestCompetition { get; set; }
-
+    public Dictionary<string, float> TeamPoints { get; set; } = new Dictionary<string, float>();
     public int? CompetitionId { get; set; }
     public Dictionary<int, string> MatchOutcomes { get; set; } = new Dictionary<int, string>();
     public Dictionary<(string, string), int> TeamPairToMatchId { get; set; } = new Dictionary<(string, string), int>();
@@ -134,6 +134,7 @@ public class TournamentCreatedModel : PageModel
             SaveMatchesToDatabase();
         }
     }
+    TeamPoints = CalculateTeamPoints();
 }
 
 public IActionResult OnPostSaveOutcomes(Dictionary<string, string> outcomes, int? CompetitionId)
@@ -212,5 +213,33 @@ public string GetWinnerByTeams(string team1, string team2)
         };
     }
     return null;
+}
+public Dictionary<string, float> CalculateTeamPoints()
+{
+    var teamsList = LatestCompetition.Teams.Split(',').ToList();
+    Dictionary<string, float> teamPoints = teamsList.ToDictionary(team => team, team => 0f);
+
+    var matchesForThisCompetition = _context.Matches.Where(m => m.CompetitionId == LatestCompetition.Id).ToList();
+
+    foreach (var match in matchesForThisCompetition)
+    {
+        switch (match.Outcome)
+        {
+            case "WinTeam1":
+                teamPoints[match.Team1] += LatestCompetition.VictoryPoints;
+                teamPoints[match.Team2] += LatestCompetition.DefeatPoints;
+                break;
+            case "WinTeam2":
+                teamPoints[match.Team2] += LatestCompetition.VictoryPoints;
+                teamPoints[match.Team1] += LatestCompetition.DefeatPoints;
+                break;
+            case "Draw":
+                teamPoints[match.Team1] += LatestCompetition.DrawPoints;
+                teamPoints[match.Team2] += LatestCompetition.DrawPoints;
+                break;
+        }
+    }
+
+    return teamPoints;
 }
 }

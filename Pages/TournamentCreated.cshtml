@@ -107,6 +107,24 @@
 else
 {
     <p>Ovaj korisnik nema turnire.</p>
+} 
+Trenutna tablica:
+@if (Model.LatestCompetition != null)
+{
+    var teamsList = Model.LatestCompetition.Teams.Split(',').ToList();
+
+    // Exclude 'BYE' team and sort remaining teams by their points in descending order
+    var sortedTeamsList = teamsList
+                          .Where(team => team != "BYE")
+                          .OrderByDescending(team => Model.TeamPoints[team])
+                          .ToList();
+
+    <ul>
+        @foreach (var team in sortedTeamsList)
+        {
+            <li>@team - @Model.TeamPoints[team] Points</li>
+        }
+    </ul>
 }
 
 <a href="/profile">Povratak na profilnu stranicu</a>
