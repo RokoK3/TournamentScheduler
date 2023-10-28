@@ -7,12 +7,61 @@
 <h2>Napravljen novi turnir, prijavljene ekipe su:</h2>
 @if (Model.LatestCompetition != null)
 {
+    var teamsList = Model.LatestCompetition.Teams.Split(',').ToList();
+
     <ul>
-        @foreach (var team in Model.LatestCompetition.Teams.Split(',').Where(t => t.Trim() != "BYE"))
+        @foreach (var team in teamsList)
         {
             <li>@team</li>
         }
     </ul>
+    
+    <h3>Details</h3>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Bodovi za pobjedu</td>
+                <td>@Model.LatestCompetition.VictoryPoints</td>
+            </tr>
+            <tr>
+                <td>Bodovi za nerješeno</td>
+                <td>@Model.LatestCompetition.DrawPoints</td>
+            </tr>
+            <tr>
+                <td>Bodovi za poraz</td>
+                <td>@Model.LatestCompetition.DefeatPoints</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h3>Raspored Utakmica</h3>
+    @if (Model.Schedule.Any())
+    {
+        <ol>
+            @foreach (var round in Model.Schedule)
+            {
+                <li>
+                    <ul>
+                        @foreach (var match in round)
+                            {
+                                if (match.Item1 <= teamsList.Count && match.Item2 <= teamsList.Count)
+                                {
+                                    <li>@teamsList[match.Item1 - 1] vs @teamsList[match.Item2 - 1]</li>
+                                }
+                                else
+                                {
+                                    <li>Error: Invalid team index in match schedule.</li>
+                                }
+                            }
+                    </ul>
+                </li>
+            }
+        </ol>
+    }
+    else
+    {
+        <p>Raspored nije još kreiran.</p>
+    }
 }
 else
 {

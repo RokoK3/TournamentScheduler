@@ -8,14 +8,15 @@
 @if (Model.UserCompetitions.Any())
 {
     <ul>
-        @foreach (var competition in Model.UserCompetitions)
-        {
-            <li>
-                @competition.Id: 
-                <span>(@string.Join(", ", competition.Teams.Split(',').Where(t => t.Trim() != "BYE")))</span>
-            </li>
-        }
+    @foreach (var competition in Model.UserCompetitions)
+    {
+        <li>
+            <a href="/TournamentCreated?competitionId=@competition.Id">@competition.Id</a>: 
+            <span>(@string.Join(", ", competition.Teams.Split(',').Where(t => t.Trim() != "BYE")))</span>
+        </li>
+    }
     </ul>
+
 }
 else
 {
