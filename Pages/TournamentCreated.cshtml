@@ -5,6 +5,7 @@
 }
 
 <h2>Napravljen novi turnir, prijavljene ekipe su:</h2>
+
 @if (Model.LatestCompetition != null)
 {
     var teamsList = Model.LatestCompetition.Teams.Split(',').ToList();
@@ -37,26 +38,41 @@
     <h3>Raspored Utakmica</h3>
     @if (Model.Schedule.Any())
     {
-        <ol>
-            @foreach (var round in Model.Schedule)
-            {
-                <li>
-                    <ul>
-                        @foreach (var match in round)
+        <form method="post" asp-page-handler="SaveOutcomes">
+            <ol>
+                @foreach (var round in Model.Schedule)
+                {
+                    <li>
+                        <ul>
+                            @foreach (var match in round)
                             {
-                                if (match.Item1 <= teamsList.Count && match.Item2 <= teamsList.Count)
-                                {
-                                    <li>@teamsList[match.Item1 - 1] vs @teamsList[match.Item2 - 1]</li>
-                                }
-                                else
-                                {
-                                    <li>Error: Invalid team index in match schedule.</li>
-                                }
+                                var team1 = teamsList[match.Item1 - 1];
+                                var team2 = teamsList[match.Item2 - 1];
+                                <li>
+                                    @team1 vs @team2 
+
+                                    @if (team1 != "BYE" && team2 != "BYE")
+                                    {
+                                        <select name="outcomes[@(match.Item1-1)_@(match.Item2-1)]">
+                                            <option value="Draw">Draw</option>
+                                            <option value="Team1Win">@team1 Wins</option>
+                                            <option value="Team2Win">@team2 Wins</option>
+                                        </select>
+
+                                        var winner = Model.GetWinnerByTeams(team1, team2);
+                                        if (!string.IsNullOrEmpty(winner) && winner != "Draw")
+                                        {
+                                            <span> Winner: @winner </span>
+                                        }
+                                    }
+                                </li>
                             }
-                    </ul>
-                </li>
-            }
-        </ol>
+                        </ul>
+                    </li>
+                }
+            </ol>
+            <button type="submit">Save Outcomes</button>
+        </form>
     }
     else
     {
@@ -67,4 +83,5 @@ else
 {
     <p>No recent tournaments found for the user.</p>
 }
+
 <a href="/profile">Povratak na profilnu stranicu</a>
