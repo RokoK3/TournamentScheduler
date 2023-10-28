@@ -39,6 +39,7 @@
     @if (Model.Schedule.Any())
     {
         <form method="post" asp-page-handler="SaveOutcomes">
+            <input type="hidden" name="CompetitionId" value="@Model.LatestCompetition.Id" />
             <ol>
                 @foreach (var round in Model.Schedule)
                 {
@@ -53,16 +54,40 @@
 
                                     @if (team1 != "BYE" && team2 != "BYE")
                                     {
+                                        var winner = Model.GetWinnerByTeams(team1, team2);
+
                                         <select name="outcomes[@(match.Item1-1)_@(match.Item2-1)]">
-                                            <option value="Draw">Draw</option>
-                                            <option value="Team1Win">@team1 Wins</option>
-                                            <option value="Team2Win">@team2 Wins</option>
+                                            @if (winner == "Draw")
+                                            {
+                                                <option value="Draw" selected>Nerješeno</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Draw">Nerješeno</option>
+                                            }
+                                            
+                                            @if (winner == team1)
+                                            {
+                                                <option value="Team1Win" selected>@team1</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Team1Win">@team1</option>
+                                            }
+
+                                            @if (winner == team2)
+                                            {
+                                                <option value="Team2Win" selected>@team2</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Team2Win">@team2</option>
+                                            }
                                         </select>
 
-                                        var winner = Model.GetWinnerByTeams(team1, team2);
                                         if (!string.IsNullOrEmpty(winner) && winner != "Draw")
                                         {
-                                            <span> Winner: @winner </span>
+                                            <span> Trenutni pobjednik: @winner </span>
                                         }
                                     }
                                 </li>
@@ -71,7 +96,7 @@
                     </li>
                 }
             </ol>
-            <button type="submit">Save Outcomes</button>
+            <button type="submit">Spremi promjene</button>
         </form>
     }
     else
@@ -81,7 +106,7 @@
 }
 else
 {
-    <p>No recent tournaments found for the user.</p>
+    <p>Ovaj korisnik nema turnire.</p>
 }
 
 <a href="/profile">Povratak na profilnu stranicu</a>

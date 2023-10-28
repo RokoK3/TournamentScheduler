@@ -136,15 +136,19 @@ public class TournamentCreatedModel : PageModel
     }
 }
 
-public IActionResult OnPostSaveOutcomes(Dictionary<string, string> outcomes)
+public IActionResult OnPostSaveOutcomes(Dictionary<string, string> outcomes, int? CompetitionId)
 {
     string currentUserId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
 
     // Fetch the LatestCompetition here
-    LatestCompetition = _context.Competitions
-        .Where(c => c.UserId == currentUserId)
-        .OrderByDescending(c => c.Id)
-        .FirstOrDefault();
+   if(!CompetitionId.HasValue) 
+{
+    ModelState.AddModelError(string.Empty, "CompetitionId is missing.");
+    return Page();
+}
+
+LatestCompetition = _context.Competitions
+        .FirstOrDefault(c => c.UserId == currentUserId && c.Id == CompetitionId);
 
     if (LatestCompetition == null)
     {
@@ -193,7 +197,7 @@ public IActionResult OnPostSaveOutcomes(Dictionary<string, string> outcomes)
 
     // Redirect or show a message confirming that the outcomes were saved
     TempData["Message"] = "Match outcomes saved successfully!";
-    return RedirectToPage();
+    return RedirectToPage(new { competitionId = CompetitionId });
 }
 public string GetWinnerByTeams(string team1, string team2)
 {
