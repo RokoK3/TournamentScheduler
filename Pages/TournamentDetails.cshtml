@@ -1,0 +1,97 @@
+@page "/tournament/{id:int}"
+@model TournamentDetails
+@{
+    Layout = null;
+}
+
+<h2>Detalji turnira:</h2>
+
+@if (Model.ViewedCompetition != null)
+{
+    var teamsList = Model.ViewedCompetition.Teams.Split(',').ToList();
+
+    <ul>
+        @foreach (var team in teamsList.Where(team => team != "BYE"))
+        {
+            <li>@team</li>
+        }
+    </ul>
+    
+    <h3>Bodovanje</h3>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Bodovi za pobjedu</td>
+                <td>@Model.ViewedCompetition.VictoryPoints</td>
+            </tr>
+            <tr>
+                <td>Bodovi za nerješeno</td>
+                <td>@Model.ViewedCompetition.DrawPoints</td>
+            </tr>
+            <tr>
+                <td>Bodovi za poraz</td>
+                <td>@Model.ViewedCompetition.DefeatPoints</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h3>Raspored Utakmica</h3>
+    @if (Model.Schedule.Any())
+    {
+        <ol>
+            @foreach (var round in Model.Schedule)
+            {
+                <li>
+                    <ul>
+                        @foreach (var match in round)
+                        {
+                            var team1 = teamsList[match.Item1 - 1];
+                            var team2 = teamsList[match.Item2 - 1];
+                            <li>
+                                @team1 vs @team2 
+
+                                @if (team1 != "BYE" && team2 != "BYE")
+                                {
+                                    var winner = Model.GetWinnerByTeams(team1, team2);
+
+                                    if (!string.IsNullOrEmpty(winner) && winner != "Draw")
+                                    {
+                                        <span> Trenutni pobjednik: @winner </span>
+                                    }
+                                }
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ol>
+    }
+    else
+    {
+        <p>Raspored nije još kreiran.</p>
+    }
+
+    <h3>Trenutna tablica:</h3>
+    @if (Model.TeamPoints != null && Model.TeamPoints.Any())
+    {
+        var sortedTeamsList = teamsList
+                              .Where(team => team != "BYE")
+                              .OrderByDescending(team => Model.TeamPoints[team])
+                              .ToList();
+
+        <ul>
+            @foreach (var team in sortedTeamsList)
+            {
+                <li>@team - @Model.TeamPoints[team] boda</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Nema tablice.</p>
+    }
+}
+else
+{
+    <p>Nema podataka o turniru.</p>
+}

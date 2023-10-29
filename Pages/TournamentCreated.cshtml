@@ -6,6 +6,8 @@
 
 <h2>Napravljen novi turnir, prijavljene ekipe su:</h2>
 
+<a href="https://localhost:5202/tournament/@Model.LatestCompetition.Id">Poveznica na detalje o turniru.</a>
+
 @if (Model.LatestCompetition != null)
 {
     var teamsList = Model.LatestCompetition.Teams.Split(',').ToList();
@@ -17,7 +19,7 @@
         }
     </ul>
     
-    <h3>Details</h3>
+    <h3>Bodovanje</h3>
     <table class="table">
         <tbody>
             <tr>
