@@ -42,20 +42,20 @@ public class TournamentCreatedModel : PageModel
     else if (teamCount == 6)
     {
         Schedule.Add(new List<(int, int)> { (1, 2), (3, 6), (4, 5) });
-        Schedule.Add(new List<(int, int)> { (1, 3), (2, 5), (4, 6) });
-        Schedule.Add(new List<(int, int)> { (1, 4), (2, 6), (3, 5) });
-        Schedule.Add(new List<(int, int)> { (1, 5), (2, 3), (4, 6) });
-        Schedule.Add(new List<(int, int)> { (1, 6), (2, 4), (3, 5) });
+        Schedule.Add(new List<(int, int)> { (3, 4), (1, 6), (2, 5) });
+        Schedule.Add(new List<(int, int)> { (4, 6), (2, 3), (1, 5) });
+        Schedule.Add(new List<(int, int)> { (1, 4), (3, 5), (2, 6) });
+        Schedule.Add(new List<(int, int)> { (5, 6), (1, 3), (2, 4) });
     }
     else if (teamCount == 8)
     {
-        Schedule.Add(new List<(int, int)> { (1, 2), (3, 8), (4, 7), (5, 6) });
+        Schedule.Add(new List<(int, int)> { (1, 2), (3, 4), (5, 6), (7, 8) });
         Schedule.Add(new List<(int, int)> { (1, 3), (2, 4), (5, 7), (6, 8) });
-        Schedule.Add(new List<(int, int)> { (1, 4), (2, 5), (3, 6), (7, 8) });
+        Schedule.Add(new List<(int, int)> { (1, 4), (2, 3), (5, 8), (6, 7) });
         Schedule.Add(new List<(int, int)> { (1, 5), (2, 6), (3, 7), (4, 8) });
-        Schedule.Add(new List<(int, int)> { (1, 6), (2, 7), (3, 8), (4, 5) });
+        Schedule.Add(new List<(int, int)> { (1, 6), (2, 5), (3, 8), (4, 7) });
         Schedule.Add(new List<(int, int)> { (1, 7), (2, 8), (3, 5), (4, 6) });
-        Schedule.Add(new List<(int, int)> { (1, 8), (2, 3), (4, 5), (6, 7) });
+        Schedule.Add(new List<(int, int)> { (1, 8), (2, 7), (3, 6), (4, 5) });
     }
     else
     {
@@ -187,6 +187,10 @@ LatestCompetition = _context.Competitions
             {
                 match.Outcome = "WinTeam2";
             }
+            else if (outcome.Value == "NotPlayedYet")
+            {
+                match.Outcome = null;
+            }
 
             // You can change the status of the match to "Completed" or any other status indicating that the outcome is recorded
             match.Status = "Completed";
@@ -209,7 +213,8 @@ public string GetWinnerByTeams(string team1, string team2)
         {
             "WinTeam1" => team1,
             "WinTeam2" => team2,
-            _ => "Draw"
+            "Draw" => "Draw",
+            _ => null
         };
     }
     return null;
@@ -236,6 +241,10 @@ public Dictionary<string, float> CalculateTeamPoints()
             case "Draw":
                 teamPoints[match.Team1] += LatestCompetition.DrawPoints;
                 teamPoints[match.Team2] += LatestCompetition.DrawPoints;
+                break;
+            case null:
+                teamPoints[match.Team1] += 0;
+                teamPoints[match.Team2] += 0;
                 break;
         }
     }

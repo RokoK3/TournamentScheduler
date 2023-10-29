@@ -57,6 +57,14 @@
                                         var winner = Model.GetWinnerByTeams(team1, team2);
 
                                         <select name="outcomes[@(match.Item1-1)_@(match.Item2-1)]">
+                                            @if (string.IsNullOrEmpty(winner))
+                                            {
+                                                <option value="NotPlayedYet" selected>Jos nije odigrano</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="NotPlayedYet">Jos nije odigrano</option>
+                                            }
                                             @if (winner == "Draw")
                                             {
                                                 <option value="Draw" selected>Nerješeno</option>
@@ -122,7 +130,7 @@ Trenutna tablica:
     <ul>
         @foreach (var team in sortedTeamsList)
         {
-            <li>@team - @Model.TeamPoints[team] Points</li>
+            <li>@team - @Model.TeamPoints[team] boda</li>
         }
     </ul>
 }
