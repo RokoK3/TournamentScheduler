@@ -11,7 +11,7 @@
     var teamsList = Model.LatestCompetition.Teams.Split(',').ToList();
 
     <ul>
-        @foreach (var team in teamsList)
+        @foreach (var team in teamsList.Where(team => team != "BYE"))
         {
             <li>@team</li>
         }
