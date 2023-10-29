@@ -99,7 +99,7 @@ public class TournamentDetails : PageModel
         
         if (ViewedCompetition != null)
         {
-            GenerateSchedule(false); // No need to save to the database since we're just viewing
+            GenerateSchedule(false); 
 
             var existingMatches = _context.Matches
                 .Where(m => m.CompetitionId == ViewedCompetition.Id)

@@ -113,10 +113,8 @@ public class TournamentCreatedModel : PageModel
 
     if (LatestCompetition != null)
     {
-        // Always generate the schedule for viewing purposes
-        GenerateSchedule(false);  // passing false to indicate that we don't want to save it yet
-
-        // Check if matches for this competition already exist in the database
+     
+        GenerateSchedule(false);  
         var existingMatches = _context.Matches
             .Where(m => m.CompetitionId == LatestCompetition.Id)
             .ToList();
@@ -130,7 +128,6 @@ public class TournamentCreatedModel : PageModel
 
         if (!existingMatches.Any())
         {
-            // No matches exist for this competition, save them to the database
             SaveMatchesToDatabase();
         }
     }
@@ -141,7 +138,6 @@ public IActionResult OnPostSaveOutcomes(Dictionary<string, string> outcomes, int
 {
     string currentUserId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
 
-    // Fetch the LatestCompetition here
    if(!CompetitionId.HasValue) 
 {
     ModelState.AddModelError(string.Empty, "CompetitionId is missing.");
@@ -159,13 +155,10 @@ LatestCompetition = _context.Competitions
 
     foreach (var outcome in outcomes)
     {
-        // Parsing the team indices from the name attribute of the select element
         var teamIndices = outcome.Key.Split('_').Select(int.Parse).ToArray();
         int team1Index = teamIndices[0];
         int team2Index = teamIndices[1];
 
-        // Retrieve the corresponding match from the database
-    
         var team1 = LatestCompetition.Teams.Split(',')[team1Index];
         var team2 = LatestCompetition.Teams.Split(',')[team2Index];
 
@@ -174,7 +167,6 @@ LatestCompetition = _context.Competitions
 
         if (match != null)
         {
-            // Set the outcome of the match
             if (outcome.Value == "Draw")
             {
                 match.Outcome = "Draw";
@@ -192,15 +184,13 @@ LatestCompetition = _context.Competitions
                 match.Outcome = null;
             }
 
-            // You can change the status of the match to "Completed" or any other status indicating that the outcome is recorded
+           
             match.Status = "Completed";
         }
     }
 
-    // Save changes to the database
     _context.SaveChanges();
 
-    // Redirect or show a message confirming that the outcomes were saved
     TempData["Message"] = "Match outcomes saved successfully!";
     return RedirectToPage(new { competitionId = CompetitionId });
 }

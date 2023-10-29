@@ -18,7 +18,7 @@ public class MyCompetitionsModel : PageModel
     {
         string currentUserId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
 
-        // Fetch all competitions created by the current user
+        
         UserCompetitions = _context.Competitions
             .Where(c => c.UserId == currentUserId)
             .ToList();

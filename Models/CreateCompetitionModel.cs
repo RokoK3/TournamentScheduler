@@ -37,14 +37,13 @@ public class CreateCompetitionModel : PageModel
     
     var teamList = Teams.Split(',').Where(t => !string.IsNullOrWhiteSpace(t)).ToList();
 
-    // Check if teams are less than 4 or more than 8.
+    
     if (teamList.Count < 4 || teamList.Count > 8)
     {
         ModelState.AddModelError("", "The number of teams should be between 4 and 8.");
         return Page();
     }
 
-    // If 5 or 7 teams, add one "BYE" to make it even.
     if (teamList.Count == 5 || teamList.Count == 7)
     {
         teamList.Add("BYE");
