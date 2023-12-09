@@ -6,7 +6,7 @@
 
 <h2>Napravljen novi turnir, prijavljene ekipe su:</h2>
 
-<a href="https://rokoturniri.azurewebsites.net/@Model.LatestCompetition.Id">Poveznica na detalje o turniru.</a>
+<a href="https://rokoturniri.azurewebsites.net/tournament/@Model.LatestCompetition.Id">Poveznica na detalje o turniru.</a>
 
 @if (Model.LatestCompetition != null)
 {
@@ -98,6 +98,10 @@
                                         if (!string.IsNullOrEmpty(winner) && winner != "Draw")
                                         {
                                             <span> Trenutni pobjednik: @winner </span>
+                                        }
+                                        else if (!string.IsNullOrEmpty(winner) && winner == "Draw")
+                                        {
+                                            <span> Trenutno nerješeno </span>
                                         }
                                     }
                                 </li>
