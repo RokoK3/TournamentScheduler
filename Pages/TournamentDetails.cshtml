@@ -58,6 +58,10 @@
                                     {
                                         <span> Trenutni pobjednik: @winner </span>
                                     }
+                                    else if (!string.IsNullOrEmpty(winner) && winner == "Draw")
+                                    {
+                                        <span> Trenutno nerješeno. </span>
+                                    }
                                 }
                             </li>
                         }
