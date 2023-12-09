@@ -66,7 +66,7 @@ app.MapGet("/logout", async (HttpContext httpContext) =>
     await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
     var domain = "https://dev-2awvvkzfc3xx2uia.us.auth0.com";
-    var postLogoutUri = "https://localhost:5202/";
+    var postLogoutUri = "https://rokoturniri.azurewebsites.net/";
     var clientId = "OXD1Fba0PAJhRf5opZRzLNC03dphqx10";
     var auth0LogoutUrl = $"{domain}/v2/logout?returnTo={Uri.EscapeDataString(postLogoutUri)}&client_id={clientId}";
 
